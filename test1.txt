@@ -1,0 +1,13 @@
+BD BD BD ABCD
+CD CD CD ABCD
+D ABCD ABCD ABCD
+
+A D
+B C
+=>
+A X X X
+H H H X
+T T T X
+
+X AHTX
+H T

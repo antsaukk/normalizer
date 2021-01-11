@@ -1,0 +1,28 @@
+BD BD BD ABCD
+CD CD CD ABCD
+D ABCD ABCD ABCD
+
+B C
+D A
+=>
+A X X X
+H H H X
+T T T X
+
+H T
+AHTX X
+---------------------
+AE XE XE XE
+HE HE HE XE
+TE TE TE XE
+
+H T
+AHTX X
+E E
+=>
+A X X X
+H H H X
+T T T X
+
+H T
+AHTX X
