@@ -9,9 +9,9 @@ from util import *
 
 
 """ normalization algorithm """
-def normalize():
+def normalize(input_file):
 	""" fetch data from file """
-	f = open("test2.txt", "r")
+	f = open(input_file, "r")
 	inputdat = f.read()
 	relaxed_problem, canonical_problem = getData(inputdat)
 	reactive = relaxed_problem.getActive()
@@ -37,14 +37,19 @@ def normalize():
 	if is_empty(renamings): 
 		return False
 
-	active_configulation, passive_matched, mappings = renamings[0], renamings[1], renamings[2] #renamings[0][0], renamings[0][1], renamings[0][2]
+	active_configulation, passive_matched, mappings = renamings[0], renamings[1], renamings[2]
+
 	merged = merge(active_configulation)
 	expansions = expand(merged)
 	active_matched = match(active, expansions)
+
 	if active_matched == active:
-		return active_matched, passive_matched
+		print("Relaxation is reduction of: ")
+		print(active_matched + '\n') 
+		print(passive_matched + '\n')
+		print("Success")
 	else:
-		return False
+		print("Relaxation is not reduction of the instance problem")
 
 """ get data from file """
 def getData(inputdat): 
@@ -59,9 +64,9 @@ def getData(inputdat):
 	return (r_problem, c_problem)	
 
 def reduceRelaxation(reactive, repassive, alphabet): 
-	#split labels of relaxation
+	""" split labels of relaxation """
 	labels = dissect(reactive)		
-	#fetch idle label
+	""" fetch idle label """
 	idle_label = getIdleLabel(labels, alphabet)
 	""" compute idle string in active side """
 	idle_conf = getIdleString(reactive, idle_label)
@@ -145,18 +150,35 @@ def match(active, actCandidate):
 	matchings = [line if line in set(actCandidate) or line[::-1] in set(actCandidate) else '' for line in active.split('\n')] #better sort the strings
 	return '\n'.join(matchings)
 
+""" helper """
+def usage():
+	print('normalizer.py -f <input_file>')
 
 def main():
 	try: 
-		output = normalize()
-		if output != False:
-			print(output[0] + '\n')
-			print(output[1])
-		else: 
-			print("non match")
-	except:
-   		e = sys.exc_info()[0]
-   		write_to_page( "<p>Error: %s</p>" % e )
+		opts, args = getopt.getopt(sys.argv[1:],"h:f:", ["help", "input_file="])
+	except getopt.GetoptError as err:
+		print(err)
+		usage()
+		sys.exit()
+
+	input_file = None
+
+	for opt, arg in opts: 
+		if opt in ('-h', '--help'):
+			usage()
+			sys.exit()
+		elif opt in ('-f', '--input_file'):
+			input_file = arg
+		else:
+			print("Unknown option: " + opt)
+			sys.exit()
+
+
+	try:
+		output = normalize(input_file)
+	except: 
+		print("Algorithm malfunctions")
 
 
 if __name__ == "__main__":
