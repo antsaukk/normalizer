@@ -33,9 +33,9 @@ def normalize(input_file):
 	repassive_side_conf = dissect(new_repassive)
 	""" rename candidate """
 	renamings = rename(repassive_side_conf, passive_side_conf, new_reactive, new_repassive, passive)
-
+	
 	if is_empty(renamings): 
-		return False
+		print("Relaxation is not reduction of the instance problem")
 
 	active_configulation, passive_matched, mappings = renamings[0], renamings[1], renamings[2]
 
@@ -157,8 +157,8 @@ def usage():
 def main():
 	try: 
 		opts, args = getopt.getopt(sys.argv[1:],"h:f:", ["help", "input_file="])
-	except getopt.GetoptError as err:
-		print(err)
+	except getopt.GetoptError as error:
+		print(error)
 		usage()
 		sys.exit()
 
@@ -177,8 +177,8 @@ def main():
 
 	try:
 		output = normalize(input_file)
-	except: 
-		print("Algorithm malfunctions")
+	except getopt.GetoptError as error:
+		print(error)
 
 
 if __name__ == "__main__":
